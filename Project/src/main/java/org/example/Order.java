@@ -1,19 +1,30 @@
 package org.example;
 
 public class Order {
-    private int id;
+    private int orderId;
     private int customerId;
     private int itemId;
+    private int quantity;
     private String comments;
 
-    public Order(int customerId, int itemId, String comments) {
+    public Order(int orderId, int customerId, int itemId, int quantity, String comments) {
+        this.orderId = orderId;
         this.customerId = customerId;
         this.itemId = itemId;
+        this.quantity = quantity;
         this.comments = comments;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getOrderId() { return orderId; }
+    public void setOrderId(int orderId) { this.orderId = orderId; }
 
     public int getCustomerId() { return customerId; }
     public void setCustomerId(int customerId) { this.customerId = customerId; }
@@ -26,11 +37,12 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", customerId=" + customerId +
-                ", itemId=" + itemId +
-                ", comments='" + comments + '\'' +
-                '}';
+        return "Order { " +
+                "orderId = " + orderId +
+                ", customerId = " + customerId +
+                ", itemId = " + itemId +
+                ", quantity = " + quantity +
+                ", comments = '" + comments + '\'' +
+                " }";
     }
 }

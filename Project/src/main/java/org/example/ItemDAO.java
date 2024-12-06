@@ -6,8 +6,18 @@ import java.util.List;
 
 public class ItemDAO {
     public void createItem(Item item) throws SQLException {
+        if (item.getName() == null || item.getName().isEmpty()) {
+            throw new IllegalArgumentException("Item name cannot be null or empty.");
+        }
+        if (item.getDescription() == null) {
+            throw new IllegalArgumentException("Item description cannot be null.");
+        }
+        if (item.getPrice() <= 0) {
+            throw new IllegalArgumentException("Item price must be greater than 0.");
+        }
+
         String insertItemSql = "INSERT INTO Item (name, description, price) VALUES (?, ?, ?)";
-        String insertHistorySql = "INSERT INTO Item_History (name, description, price, t_start) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+        String insertHistorySql = "INSERT INTO Item_History (item_id, name, description, price, t_start) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
 
         try (Connection conn = DatabaseManager.getConnection()) {
             conn.setAutoCommit(false);
@@ -15,23 +25,23 @@ public class ItemDAO {
             try (PreparedStatement insertItemStmt = conn.prepareStatement(insertItemSql, Statement.RETURN_GENERATED_KEYS);
                  PreparedStatement insertHistoryStmt = conn.prepareStatement(insertHistorySql)) {
 
-                // Inserare în Item
+                // insert item
                 insertItemStmt.setString(1, item.getName());
                 insertItemStmt.setString(2, item.getDescription());
                 insertItemStmt.setDouble(3, item.getPrice());
                 insertItemStmt.executeUpdate();
 
-                // Preluare ID generat
                 try (ResultSet rs = insertItemStmt.getGeneratedKeys()) {
                     if (rs.next()) {
-                        item.setId(rs.getInt(1));
+                        item.setId(rs.getInt(1)); // Setăm ID-ul generat
                     }
                 }
 
-                // Inserare în Item_History
-                insertHistoryStmt.setString(1, item.getName());
-                insertHistoryStmt.setString(2, item.getDescription());
-                insertHistoryStmt.setDouble(3, item.getPrice());
+                // insert into history
+                insertHistoryStmt.setInt(1, item.getId());
+                insertHistoryStmt.setString(2, item.getName());
+                insertHistoryStmt.setString(3, item.getDescription());
+                insertHistoryStmt.setDouble(4, item.getPrice());
                 insertHistoryStmt.executeUpdate();
 
                 conn.commit();
@@ -44,7 +54,6 @@ public class ItemDAO {
 
     public List<Item> getAllItems() throws SQLException {
         String sql = "SELECT * FROM Item";
-//        String sql = "SELECT * FROM cabd_schema.\"Item\";";
         List<Item> items = new ArrayList<>();
 
         try (Connection conn = DatabaseManager.getConnection();
@@ -61,32 +70,42 @@ public class ItemDAO {
     }
 
     public void updateItem(Item item) throws SQLException {
+        String checkExistenceSql = "SELECT 1 FROM Item WHERE id = ?";
         String updateItemSql = "UPDATE Item SET name = ?, description = ?, price = ? WHERE id = ?";
-        String endHistorySql = "UPDATE Item_History SET t_end = CURRENT_TIMESTAMP WHERE id = (SELECT MAX(id) FROM Item_History WHERE name = ? AND t_end IS NULL)";
-        String insertHistorySql = "INSERT INTO Item_History (name, description, price, t_start) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+        String endHistorySql = "UPDATE Item_History SET t_end = CURRENT_TIMESTAMP WHERE item_id = ? AND t_end IS NULL";
+        String insertHistorySql = "INSERT INTO Item_History (item_id, name, description, price, t_start) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
 
         try (Connection conn = DatabaseManager.getConnection()) {
             conn.setAutoCommit(false);
+
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkExistenceSql)) {
+                checkStmt.setInt(1, item.getId());
+                try (ResultSet rs = checkStmt.executeQuery()) {
+                    if (!rs.next()) {
+                        throw new SQLException("Item with ID " + item.getId() + " does not exist.");
+                    }
+                }
+            }
 
             try (PreparedStatement updateItemStmt = conn.prepareStatement(updateItemSql);
                  PreparedStatement endHistoryStmt = conn.prepareStatement(endHistorySql);
                  PreparedStatement insertHistoryStmt = conn.prepareStatement(insertHistorySql)) {
 
-                // Update Item
+                // update item
                 updateItemStmt.setString(1, item.getName());
                 updateItemStmt.setString(2, item.getDescription());
                 updateItemStmt.setDouble(3, item.getPrice());
                 updateItemStmt.setInt(4, item.getId());
                 updateItemStmt.executeUpdate();
 
-                // End previous history
-                endHistoryStmt.setString(1, item.getName());
+                // update history
+                endHistoryStmt.setInt(1, item.getId());
                 endHistoryStmt.executeUpdate();
 
-                // Add new history
-                insertHistoryStmt.setString(1, item.getName());
-                insertHistoryStmt.setString(2, item.getDescription());
-                insertHistoryStmt.setDouble(3, item.getPrice());
+                insertHistoryStmt.setInt(1, item.getId());
+                insertHistoryStmt.setString(2, item.getName());
+                insertHistoryStmt.setString(3, item.getDescription());
+                insertHistoryStmt.setDouble(4, item.getPrice());
                 insertHistoryStmt.executeUpdate();
 
                 conn.commit();
@@ -97,19 +116,37 @@ public class ItemDAO {
         }
     }
 
-    // Metoda pentru a șterge un item
     public void deleteItem(int itemId) throws SQLException {
-        String sql = "DELETE FROM Item WHERE id = ?";
-        try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        String checkExistenceSql = "SELECT 1 FROM Item WHERE id = ?";
+        String deleteItemSql = "DELETE FROM Item WHERE id = ?";
+        String endHistorySql = "UPDATE Item_History SET t_end = CURRENT_TIMESTAMP WHERE item_id = ? AND t_end IS NULL";
 
-            statement.setInt(1, itemId);  // Setează ID-ul articolului de șters
-            int rowsAffected = statement.executeUpdate();  // Execută interogarea
+        try (Connection conn = DatabaseManager.getConnection()) {
+            conn.setAutoCommit(false);
 
-            if (rowsAffected > 0) {
-                System.out.println("Item with ID " + itemId + " deleted successfully.");
-            } else {
-                System.out.println("No item found with ID " + itemId);
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkExistenceSql)) {
+                checkStmt.setInt(1, itemId);
+                try (ResultSet rs = checkStmt.executeQuery()) {
+                    if (!rs.next()) {
+                        throw new SQLException("Item with ID " + itemId + " does not exist.");
+                    }
+                }
+            }
+
+            try (PreparedStatement endHistoryStmt = conn.prepareStatement(endHistorySql);
+                 PreparedStatement deleteItemStmt = conn.prepareStatement(deleteItemSql)) {
+
+                // update history
+                endHistoryStmt.setInt(1, itemId);
+                endHistoryStmt.executeUpdate();
+
+                deleteItemStmt.setInt(1, itemId);
+                deleteItemStmt.executeUpdate();
+
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
             }
         }
     }
