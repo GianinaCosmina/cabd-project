@@ -1,6 +1,8 @@
 package org.example;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -10,22 +12,25 @@ public class Main {
         ItemDAO itemDAO = new ItemDAO();
         CustomerDAO customerDAO = new CustomerDAO();
         OrderDAO orderDAO = new OrderDAO();
+        ReportDAO reportDAO = new ReportDAO();
 
         while (true) {
             System.out.println("===== MAIN MENU =====");
             System.out.println("1. Manage Items");
             System.out.println("2. Manage Customers");
             System.out.println("3. Manage Orders");
+            System.out.println("4. Manage Reports");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
             int mainChoice = scanner.nextInt();
-            scanner.nextLine(); 
+            scanner.nextLine();
 
             switch (mainChoice) {
                 case 1 -> manageItems(scanner, itemDAO);
                 case 2 -> manageCustomers(scanner, customerDAO);
                 case 3 -> manageOrders(scanner, orderDAO);
+                case 4 -> manageReports(scanner, reportDAO);
                 case 0 -> {
                     System.out.println("Exiting...");
                     return;
@@ -89,6 +94,43 @@ public class Main {
                         itemDAO.deleteItem(id);
                         System.out.println("Item deleted successfully.");
                     }
+                    case 0 -> {
+                        System.out.println("Returning to main menu...");
+                        return;
+                    }
+                    default -> System.out.println("Invalid option. Try again.");
+                }
+            } catch (SQLException e) {
+                System.err.println("Database error: " + e.getMessage());
+            }
+        }
+    }
+
+    private static void manageReports(Scanner scanner, ReportDAO reportDAO) {
+        while (true) {
+            System.out.println("\n===== REPORT MENU =====");
+            System.out.println("1. View current item state");
+            System.out.println("2. View longest period for item price min or max");
+            System.out.println("4. View time differences for item price");
+            System.out.println("4. View state at a specific moment");
+            System.out.println("0. Back to Main Menu");
+            System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            try {
+                switch (choice) {
+                    case 1 -> {
+                        System.out.print("Enter item ID: ");
+                        int itemId = scanner.nextInt();
+                        Item item = reportDAO.getCurrentItemState(itemId);
+                        System.out.println(item != null ? "Current Item: " + item : "Item not found.");
+                    }
+                    case 2 -> getLongestPricePeriod(reportDAO);
+                    case 3 -> generatePriceDifferenceReport(reportDAO);
+                    case 4 -> viewStateAtMoment(scanner, reportDAO);
+
                     case 0 -> {
                         System.out.println("Returning to main menu...");
                         return;
@@ -175,7 +217,7 @@ public class Main {
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); 
+            scanner.nextLine();
 
             try {
                 switch (choice) {
@@ -188,7 +230,7 @@ public class Main {
                         int itemId = scanner.nextInt();
                         System.out.print("Enter quantity: ");
                         int quantity = scanner.nextInt();
-                        scanner.nextLine(); 
+                        scanner.nextLine();
                         System.out.print("Enter comments: ");
                         String comments = scanner.nextLine();
 
@@ -210,7 +252,7 @@ public class Main {
                         int itemId = scanner.nextInt();
                         System.out.print("Enter new quantity: ");
                         int quantity = scanner.nextInt();
-                        scanner.nextLine(); 
+                        scanner.nextLine();
                         System.out.print("Enter new comments: ");
                         String comments = scanner.nextLine();
 
@@ -253,4 +295,47 @@ public class Main {
             }
         }
     }
+
+    private static void getLongestPricePeriod(ReportDAO reportDAO) throws SQLException {
+        List<PeriodReport> reports = reportDAO.getLongestPricePeriod();
+        for (PeriodReport report : reports) {
+            System.out.println(report);
+        }
+    }
+
+    private static void generatePriceDifferenceReport(ReportDAO reportDAO) {
+        System.out.println("\n===== PRICE DIFFERENCE REPORT =====");
+        try {
+            List<PriceDifferenceReport> reports = reportDAO.getPriceDifferences();
+            for (PriceDifferenceReport report : reports) {
+                System.out.println(report);
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+        }
+    }
+
+    private static void viewStateAtMoment(Scanner scanner, ReportDAO reportDAO) {
+        System.out.print("Enter the moment (YYYY-MM-DD HH:MM:SS): ");
+        String input = scanner.nextLine();
+
+        try {
+            Timestamp t = Timestamp.valueOf(input);
+            List<ItemHistoryRecord> records = reportDAO.getStateAtMoment(t);
+
+            if (records.isEmpty()) {
+                System.out.println("No records found for the given timestamp.");
+            } else {
+                System.out.println("State at " + t + ":");
+                for (ItemHistoryRecord record : records) {
+                    System.out.println(record);
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid timestamp format. Please try again.");
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+        }
+    }
+
 }
