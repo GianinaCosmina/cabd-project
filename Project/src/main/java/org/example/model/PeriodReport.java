@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -9,6 +9,9 @@ public class PeriodReport {
     private Timestamp startTime;
     private Timestamp endTime;
     private long duration;
+
+    public PeriodReport() {
+    }
 
     public PeriodReport(int itemId, double value, Timestamp startTime, Timestamp endTime, long duration) {
         this.itemId = itemId;

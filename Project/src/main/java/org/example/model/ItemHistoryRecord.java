@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -11,6 +11,9 @@ public class ItemHistoryRecord {
     private Timestamp tStart;
     private Timestamp tEnd;
     private int itemId;
+
+    public ItemHistoryRecord() {
+    }
 
     public ItemHistoryRecord(int id, String name, String description, BigDecimal price, Timestamp tStart, Timestamp tEnd, int itemId) {
         this.id = id;

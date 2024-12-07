@@ -1,0 +1,66 @@
+<div class="p-5">
+<!-- Items Table -->
+<h3>Items</h3>
+<!-- Button to Open Create Modal -->
+<div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+</div>
+<button class="btn btn-success mb-3" (click)="openCreateModal()">Create New Item</button>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of items">
+      <td>{{ item.id }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.description }}</td>
+      <td>{{ item.price| currency }}</td>
+      <td>
+        <button class="btn btn-primary btn-sm" (click)="openEditModal(item)">Edit</button>
+        <button class="btn btn-danger btn-sm" (click)="deleteItem(item.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="modal" tabindex="-1" [ngClass]="{ show: isEditModalOpen }" [style.display]="isEditModalOpen ? 'block' : 'none'">
+    <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ isCreateMode ? 'Create New Item' : 'Edit Item' }}</h5>
+          <button type="button" class="btn btn-close" (click)="closeEditModal()">x</button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="itemName" class="form-label">Name</label>
+              <input type="text" id="itemName" [(ngModel)]="currentItem.name" name="itemName" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label for="itemDescription" class="form-label">Description</label>
+              <input type="text" id="itemDescription" [(ngModel)]="currentItem.description" name="itemDescription" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label for="itemPrice" class="form-label">Price</label>
+              <input type="number" id="itemPrice" [(ngModel)]="currentItem.price" name="itemPrice" class="form-control">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="saveItem()">{{ isCreateMode ? 'Create' : 'Save' }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

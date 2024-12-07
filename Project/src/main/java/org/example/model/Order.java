@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 public class Order {
     private int orderId;
@@ -6,6 +6,9 @@ public class Order {
     private int itemId;
     private int quantity;
     private String comments;
+
+    public Order() {
+    }
 
     public Order(int orderId, int customerId, int itemId, int quantity, String comments) {
         this.orderId = orderId;

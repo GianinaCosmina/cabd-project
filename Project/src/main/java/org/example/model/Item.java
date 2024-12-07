@@ -1,12 +1,26 @@
-package org.example;
+package org.example.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Item {
     private int id;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("description")
     private String description;
-    private double price;
+    @JsonProperty("price")
+    private Double price;
 
     public Item(String name, String description, double price) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
+    public Item() {
+    }
+
+    public Item(String name, String description, Double price) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -21,8 +35,8 @@ public class Item {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
 
     @Override
     public String toString() {

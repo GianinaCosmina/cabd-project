@@ -1,10 +1,18 @@
-package org.example;
+package org.example.dao;
+
+import org.example.DatabaseManager;
+import org.example.model.Item;
+import org.example.model.ItemHistoryRecord;
+import org.example.model.PeriodReport;
+import org.example.model.PriceDifferenceReport;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ReportDAO {
     public Item getCurrentItemState(int itemId) throws SQLException {
         String sql = "SELECT id, name, description, price FROM Item WHERE id = ?";

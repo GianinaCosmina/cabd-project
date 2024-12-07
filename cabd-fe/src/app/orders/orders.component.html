@@ -1,0 +1,76 @@
+<div class="p-5">
+    <!-- Orders Table -->
+    <h3>Orders</h3>
+    <!-- Button to Open Create Modal -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+    </div>
+    <button class="btn btn-success mb-3" (click)="openCreateModal()">Create New Order</button>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>OrderID</th>
+          <th>ItemId</th>
+          <th>CustomerId</th>
+          <th>Quantity</th>
+          <th>Comments</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td>{{ order.orderId }}</td>
+          <td>{{ order.itemId }}</td>
+          <td>{{ order.customerId }}</td>
+          <td>{{ order.quantity }}</td>
+          <td>{{ order.comments }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="openEditModal(order)">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteOrder(order.orderId)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div id="scrollableModal" class="modal" tabindex="-1" [ngClass]="{ show: isEditModalOpen }" [style.display]="isEditModalOpen ? 'block' : 'none'">
+        <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{ isCreateMode ? 'Create New Order' : 'Edit Order' }}</h5>
+              <button type="button" class="btn btn-close" (click)="closeEditModal()">x</button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="orderId" class="form-label">OrderId</label>
+                  <input [disabled]="!isCreateMode" type="number" orderId="orderId" [(ngModel)]="currentOrder.orderId" name="orderId" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="itemId" class="form-label">ItemId</label>
+                  <input [disabled]="!isCreateMode" type="number" orderId="itemId" [(ngModel)]="currentOrder.itemId" name="itemId" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="customerId" class="form-label">CustomerId</label>
+                    <input [disabled]="!isCreateMode" type="number" orderId="customerId" [(ngModel)]="currentOrder.customerId" name="customerId" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="orderQuantity" class="form-label">Quantity</label>
+                  <input type="number" orderId="orderQuantity" [(ngModel)]="currentOrder.quantity" name="orderQuantity" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="orderComments" class="form-label">Comments</label>
+                  <input type="text" orderId="orderComments" [(ngModel)]="currentOrder.comments" name="orderComments" class="form-control">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="saveOrder()">{{ isCreateMode ? 'Create' : 'Save' }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

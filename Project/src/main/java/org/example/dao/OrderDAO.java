@@ -1,9 +1,14 @@
-package org.example;
+package org.example.dao;
+
+import org.example.DatabaseManager;
+import org.example.model.Order;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class OrderDAO {
     private boolean customerExists(int customerId, Connection conn) throws SQLException {
         String checkCustomerSql = "SELECT 1 FROM customer WHERE id = ?";

@@ -1,9 +1,14 @@
-package org.example;
+package org.example.dao;
+
+import org.example.DatabaseManager;
+import org.example.model.Item;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ItemDAO {
     public void createItem(Item item) throws SQLException {
         if (item.getName() == null || item.getName().isEmpty()) {

@@ -1,9 +1,14 @@
-package org.example;
+package org.example.dao;
+
+import org.example.DatabaseManager;
+import org.example.model.Customer;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class CustomerDAO {
     public void createCustomer(Customer customer) throws SQLException {
         if (customer.getName() == null || customer.getName().isEmpty()) {

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -11,6 +11,9 @@ public class PriceDifferenceReport {
     private BigDecimal priceDifference;
     private Timestamp tStart;
     private Timestamp tEnd;
+
+    public PriceDifferenceReport() {
+    }
 
     public PriceDifferenceReport(int itemId, String name, BigDecimal currentPrice, BigDecimal previousPrice, BigDecimal priceDifference, Timestamp tStart, Timestamp tEnd) {
         this.itemId = itemId;

@@ -1,9 +1,16 @@
 package org.example;
 
+import org.example.dao.CustomerDAO;
+import org.example.dao.ItemDAO;
+import org.example.dao.OrderDAO;
+import org.example.dao.ReportDAO;
+import org.example.model.*;
+
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Scanner;
+
 
 public class Main {
     public static void main(String[] args) {

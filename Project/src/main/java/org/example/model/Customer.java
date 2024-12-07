@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 public class Customer {
     private int id;
@@ -8,6 +8,9 @@ public class Customer {
     public Customer(String name, String address) {
         this.name = name;
         this.address = address;
+    }
+
+    public Customer() {
     }
 
     public int getId() { return id; }
