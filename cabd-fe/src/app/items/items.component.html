@@ -25,6 +25,7 @@
       <td>
         <button class="btn btn-primary btn-sm" (click)="openEditModal(item)">Edit</button>
         <button class="btn btn-danger btn-sm" (click)="deleteItem(item.id)">Delete</button>
+        <button class="btn btn-secondary btn-sm" (click)="currentState(item.id)">See Current State</button>
       </td>
     </tr>
   </tbody>
@@ -38,7 +39,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{ isCreateMode ? 'Create New Item' : 'Edit Item' }}</h5>
-          <button type="button" class="btn btn-close" (click)="closeEditModal()">x</button>
+          <button type="button" class="btn btn-close" (click)="closeEditModal()"></button>
         </div>
         <div class="modal-body">
           <form>
@@ -63,4 +64,30 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal" tabindex="-1" [ngClass]="{ show: isCurrentStateModalOpen }" [style.display]="isCurrentStateModalOpen ? 'block' : 'none'">
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div *ngIf="currentItem" class="card">
+              <div class="card-header text-center">
+                <h5>Item: {{ currentItem.name }}</h5>
+              </div>
+              <div class="card-body">
+                <p><strong>ID:</strong> {{ currentItem.id }}</p>
+                <p><strong>Description:</strong> {{ currentItem.description }}</p>
+                <p><strong>Price:</strong> {{ currentItem.price | currency }}</p>
+              </div>
+              <div class="card-footer text-center">
+                <button type="button" class="btn btn-secondary" (click)="closeCurrentStateModal()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="currentState(currentItem.id)">Refresh</button>
+              </div>
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+              {{ errorMessage }}
+            </div>
+          </div>
+        </div>
+    </div>
 </div>

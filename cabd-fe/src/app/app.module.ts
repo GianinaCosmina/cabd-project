@@ -12,9 +12,12 @@ import { HttpErrorInterceptor } from './services/http-error.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomersComponent } from './customers/customers.component';
 import { OrdersComponent } from './orders/orders.component';
+import { LongestPricePeriodComponent } from './longest-price-period/longest-price-period.component';
+import { PriceDifferenceReportComponent } from './price-difference-report/price-difference-report.component';
+import { StateAtTheMomentComponent } from './state-at-the-moment/state-at-the-moment.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, HomepageComponent, ItemsComponent, CustomersComponent, OrdersComponent],
+  declarations: [AppComponent, NavbarComponent, HomepageComponent, ItemsComponent, CustomersComponent, OrdersComponent, LongestPricePeriodComponent, PriceDifferenceReportComponent, StateAtTheMomentComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true }  // Register interceptor

@@ -1,0 +1,59 @@
+<div class="p-5">
+    <div class="container mt-4">
+        <h2>Price Difference Report</h2>
+      
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+      
+        <!-- Filter Input with Button -->
+        <div class="form-group mb-3 d-flex">
+          <label for="filterItemId" class="me-2">Filter by Item ID</label>
+          <input
+            type="text"
+            id="filterItemId"
+            class="form-control me-2"
+            [(ngModel)]="filterItemId"
+            placeholder="Enter Item ID"
+          />
+          <button class="btn btn-primary" (click)="filterReports()">Apply Filter</button>
+        </div>
+      
+        <!-- Report Table -->
+        <div *ngIf="filteredReports.length > 0" class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="table-primary">
+              <tr>
+                <th>Item ID</th>
+                <th>Name</th>
+                <th>Current Price</th>
+                <th>Previous Price</th>
+                <th>Price Difference</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of filteredReports">
+                <td>{{ report.itemId }}</td>
+                <td>{{ report.name }}</td>
+                <td>{{ report.currentPrice | currency }}</td>
+                <td>{{ formatPrice(report.previousPrice) }}</td>
+                <td [ngClass]="{'text-success': report.priceDifference > 0, 'text-danger': report.priceDifference < 0}">
+                  {{ report.priceDifference | currency }}
+                </td>
+                <td>{{ formatTimestamp(report.tstart) }}</td>
+                <td>{{ formatTimestamp(report.tend) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      
+        <!-- No Data Message -->
+        <div *ngIf="filteredReports.length === 0 && !errorMessage" class="alert alert-info">
+          No matching reports found.
+        </div>
+      </div>
+      
+    </div>

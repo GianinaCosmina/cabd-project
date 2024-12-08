@@ -25,6 +25,71 @@ public class ItemHistoryRecord {
         this.itemId = itemId;
     }
 
+    public ItemHistoryRecord(String name, String description, BigDecimal price, Timestamp tStart, Timestamp tEnd, int itemId) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.tStart = tStart;
+        this.tEnd = tEnd;
+        this.itemId = itemId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Timestamp gettStart() {
+        return tStart;
+    }
+
+    public void settStart(Timestamp tStart) {
+        this.tStart = tStart;
+    }
+
+    public Timestamp gettEnd() {
+        return tEnd;
+    }
+
+    public void settEnd(Timestamp tEnd) {
+        this.tEnd = tEnd;
+    }
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
+    }
+
     @Override
     public String toString() {
         return "HistoryRecord{" +

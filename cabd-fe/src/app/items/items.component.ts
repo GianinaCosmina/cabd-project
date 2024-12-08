@@ -9,6 +9,7 @@ import { HomepageService } from '../services/homepage-service';
 export class ItemsComponent implements OnInit {
   items: any[] = [];
   isEditModalOpen = false;
+  isCurrentStateModalOpen = false;
   isCreateMode = false;
   currentItem: {
     id?: number,
@@ -60,6 +61,31 @@ export class ItemsComponent implements OnInit {
     this.homepageService.deleteItem(itemId).subscribe(() => {
       this.fetchData();
     }, (error: string) => (this.errorMessage = error));
+  }
+
+  currentState(itemId: number | undefined): void {
+    if(itemId){
+      this.homepageService.getCurrentStateForItem(itemId).subscribe((data) => {
+        this.currentItem = data; 
+        this.currentItem.id  = itemId;
+        this.errorMessage = undefined;
+        this.isCurrentStateModalOpen = true;
+      }, (error: string) => (this.errorMessage = error));
+    } else{
+      this.errorMessage = "the item id is missing";
+    }
+
+  }
+
+  closeCurrentStateModal(): void {
+    this.isCurrentStateModalOpen = false;
+    this.currentItem = {
+      id: undefined,
+      price: undefined,
+      name: undefined,
+      description: undefined
+    };
+    this.errorMessage = undefined;
   }
 
     // Open the modal in create mode

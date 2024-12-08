@@ -1,1 +1,194 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --primary-color: #003976; /* Main color for buttons, navbar, etc. */
+    --secondary-color: #6c757d; /* Subtle secondary color */
+    --background-color: #f8f9fa; /* Light background */
+    --text-color: #212529; /* Default text color */
+    --light-color: #f0f0f0; /* White for contrasts */
+    --danger-color: #dc3545; /* For alerts and errors */
+    --success-color: #28a745; /* For success messages */
+    --hover-color: #9fcdff; /* Hover state for primary buttons/links */
+    --border-color: #dee2e6; /* For tables and containers */
+  }
+  
+  .navbar {
+    background-color: var(--primary-color);
+    color: var(#7b7b7b);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-brand {
+    font-weight: bold;
+    color: var(#7b7b7b);
+  }
+  
+  .navbar-brand:hover {
+    color: var(--hover-color);
+  }
+  
+  .nav-link {
+    color: var(#7b7b7b);
+    font-weight: 500;
+  }
+  
+  .nav-link:hover {
+    color: var(--hover-color);
+  }
+  
+  .navbar-toggler {
+    border-color: var(--light-color);
+  }
+  .modal-content {
+    border-radius: 8px;
+    background-color: var(--light-color);
+    color: var(--text-color);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .modal-header {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .modal-footer {
+    background-color: var(--background-color);
+    border-top: 1px solid var(--border-color);
+  }
+  
+  .modal-footer .btn:hover {
+    background-color: var(--hover-color);
+  }
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--light-color);
+  }
+  
+  .table th {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+    font-weight: bold;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+  }
+  
+  .table td {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+    color: var(--text-color);
+  }
+  
+  .table tbody tr:nth-child(odd) {
+    background-color: var(--background-color);
+  }
+  
+  .table tbody tr:hover {
+    background-color: var(--hover-color);
+    color: var(--light-color);
+  }
+
+  .alert {
+    border-radius: 8px;
+    padding: 12px 20px;
+    margin: 10px 0;
+  }
+  
+  .alert-danger {
+    background-color: var(--danger-color);
+    color: var(--light-color);
+  }
+  
+  .alert-success {
+    background-color: var(--success-color);
+    color: var(--light-color);
+  }
+  
+  .alert-info {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+  }
+
+  input, select, textarea {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .card {
+    background-color: var(--light-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  footer {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+    padding: 10px;
+    text-align: center;
+  }
+
+  .btn-primary {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--hover-color);
+  }
+  
+  .btn-danger {
+    background-color: var(--danger-color);
+    color: var(--light-color);
+    border: none;
+  }
+  
+  .btn-danger:hover {
+    background-color: darken(var(--danger-color), 10%);
+  }
+  
+  .btn-success {
+    background-color: var(--success-color);
+    color: var(--light-color);
+    border: none;
+  }
+  
+  .btn-success:hover {
+    background-color: darken(var(--success-color), 10%);
+  }
+  

@@ -1,0 +1,56 @@
+<div class="p-5">
+    <div class="container mt-4">
+        <h2>Item History Records</h2>
+      
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+      
+        <!-- Timestamp Input and Button -->
+        <div class="form-group mb-3 d-flex">
+          <label for="timestamp" class="me-2">Timestamp (YYYY-MM-DD HH:MM:SS)</label>
+          <input
+            type="datetime-local"
+            id="timestamp"
+            class="form-control me-2"
+            [(ngModel)]="timestamp"
+            placeholder="Enter Timestamp"
+          />
+          <button class="btn btn-primary" (click)="fetchData()">Fetch Item History</button>
+        </div>
+      
+        <!-- Item History Table -->
+        <div *ngIf="reports.length > 0" class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="table-primary">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Item ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let record of reports">
+                <td>{{ record.id }}</td>
+                <td>{{ record.name }}</td>
+                <td>{{ record.description }}</td>
+                <td>{{ record.price | currency }}</td>
+                <td>{{ formatTimestamp(record.tStart) }}</td>
+                <td>{{ formatTimestamp(record.tEnd) }}</td>
+                <td>{{ record.itemId }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      
+        <!-- No Data Message -->
+        <div *ngIf="reports.length === 0 && !errorMessage" class="alert alert-info">
+          No matching records found.
+        </div>
+      </div>      
+    </div>

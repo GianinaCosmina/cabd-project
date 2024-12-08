@@ -1,0 +1,39 @@
+<div class="p-5">
+<div class="container mt-4">
+    <h2>Period Report</h2>
+  
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Report Table -->
+    <div *ngIf="reports.length > 0" class="table-responsive">
+      <table class="table table-bordered">
+        <thead class="table-primary">
+          <tr>
+            <th>Item ID</th>
+            <th>Value</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of reports">
+            <td>{{ report.itemId }}</td>
+            <td>{{ report.value | number:'1.2-2' }}</td>
+            <td>{{ formatTimestamp(report.startTime) }}</td>
+            <td>{{ formatTimestamp(report.endTime) }}</td>
+            <td>{{ report.duration | number }} ms</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- No Data Message -->
+    <div *ngIf="reports.length === 0 && !errorMessage" class="alert alert-info">
+      No reports available.
+    </div>
+  </div>
+</div>

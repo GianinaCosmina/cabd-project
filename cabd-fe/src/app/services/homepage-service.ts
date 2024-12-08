@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError  } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import {PeriodReport, PriceDifferenceReport, ItemHistoryRecord} from './model';
 
 @Injectable({
   providedIn: 'root',
@@ -64,4 +65,21 @@ export class HomepageService {
       'Content-Type': 'application/json'
     })});
   }
+
+  getCurrentStateForItem(itemId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/reports/current-state/${itemId}`);
+  }
+
+  getLongestPricePeriod(): Observable<PeriodReport[]> {
+    return this.http.get<PeriodReport[]>(`${this.baseUrl}/reports/longest-price-period`);
+  }
+
+  getPriceDifferenceReport(): Observable<PriceDifferenceReport[]> {
+    return this.http.get<PriceDifferenceReport[]>(`${this.baseUrl}/reports/price-difference-report`);
+  }
+
+  getStateAtTheMoment(timestamp: string): Observable<ItemHistoryRecord[]> {
+    return this.http.get<ItemHistoryRecord[]>(`${this.baseUrl}/reports/state-at-the-moment?timestamp=${encodeURIComponent(timestamp)}`);
+  }
+
 }

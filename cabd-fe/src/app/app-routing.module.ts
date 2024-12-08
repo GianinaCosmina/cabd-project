@@ -4,6 +4,10 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { ItemsComponent } from './items/items.component';
 import { CustomersComponent } from './customers/customers.component';
 import { OrdersComponent } from './orders/orders.component';
+import { LongestPricePeriodComponent } from './longest-price-period/longest-price-period.component';
+import { PriceDifferenceReportComponent } from './price-difference-report/price-difference-report.component';
+import { StateAtTheMomentComponent } from './state-at-the-moment/state-at-the-moment.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'homepage', pathMatch: 'full' },
@@ -15,11 +19,18 @@ const routes: Routes = [
     path: 'items',
     component: ItemsComponent,
   },
-  // {
-  //   path: "item_history",
-  //   loadChildren: () =>
-  //     import("./item_history/item_history.module").then((m) => m.itemHistoryModule),
-  // },
+  {
+    path: 'reports/longest-price-period',
+    component: LongestPricePeriodComponent,
+  },
+  {
+    path: 'reports/price-difference-report',
+    component: PriceDifferenceReportComponent,
+  },
+  {
+    path: 'reports/state-at-the-moment',
+    component: StateAtTheMomentComponent,
+  },
   {
     path: "customers",
     component: CustomersComponent,

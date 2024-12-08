@@ -51,8 +51,7 @@ public class ReportDAO {
                 "       t_end, " +
                 "       duration " +
                 "FROM price_periods " +
-                "ORDER BY duration DESC " +
-                "LIMIT 1;";
+                "ORDER BY duration ASC ";
 
         try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -126,7 +125,7 @@ public class ReportDAO {
         String sql =
                 "SELECT id, name, description, price, t_start, t_end, item_id " +
                         "FROM item_history " +
-                        "WHERE t_start <= ? AND t_end > ?;";
+                        "WHERE t_start <= ? AND (t_end > ? OR t_end IS NULL);";
 
         List<ItemHistoryRecord> result = new ArrayList<>();
         try (PreparedStatement statement = DatabaseManager.getConnection().prepareStatement(sql)) {
